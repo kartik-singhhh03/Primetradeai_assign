@@ -6,6 +6,7 @@ const swaggerSpec = require("./src/config/swagger");
 
 const routes = require("./src/routes");
 const { notFound, errorHandler } = require("./src/middleware");
+const logger = require("./src/utils/logger");
 
 const app = express();
 
@@ -28,9 +29,15 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Request logger
+app.use((req, _res, next) => {
+  logger.info(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Swagger docs
 const swaggerOptions = {
-  customSiteTitle: 'PrimeTradeAI API Docs',
+  customSiteTitle: "PrimeTradeAI API Docs",
   customCss: `
     body { background: #f0fdf4; }
     .swagger-ui .topbar { background: #15803d; padding: 10px 0; }
@@ -49,7 +56,11 @@ const swaggerOptions = {
     .swagger-ui .model-box { background: #f0fdf4; }
   `,
 };
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerOptions));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, swaggerOptions),
+);
 
 // Mount all routes
 app.use("/api", routes);

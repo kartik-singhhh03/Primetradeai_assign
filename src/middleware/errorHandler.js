@@ -9,9 +9,6 @@ const errorHandler = (err, req, res, next) => {
   if (err.code === "P2002") {
     statusCode = 409;
     message = `A record with that ${err.meta?.target?.join(", ")} already exists.`;
-
-
-
   } else if (err.code === "P2025") {
     statusCode = 404;
     message = "Record not found.";
@@ -26,11 +23,6 @@ const errorHandler = (err, req, res, next) => {
     message = "Token has expired.";
   }
 
-
-
-
-  
-
   // Malformed JSON body
   if (err.type === "entity.parse.failed") {
     statusCode = 400;
@@ -39,7 +31,9 @@ const errorHandler = (err, req, res, next) => {
 
   // Log server errors
   if (statusCode >= 500) {
-    logger.error(`${req.method} ${req.originalUrl} — ${err.stack || err.message}`);
+    logger.error(
+      `${req.method} ${req.originalUrl} — ${err.stack || err.message}`,
+    );
   } else {
     logger.warn(`${req.method} ${req.originalUrl} — ${statusCode}: ${message}`);
   }

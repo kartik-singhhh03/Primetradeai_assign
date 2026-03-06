@@ -1,4 +1,4 @@
-const prisma = require('../config/prisma');
+const prisma = require("../config/prisma");
 
 const createTask = async (userId, { title, description }) => {
   return prisma.task.create({
@@ -7,21 +7,21 @@ const createTask = async (userId, { title, description }) => {
 };
 
 const getAllTasks = async (userId, role) => {
-  const where = role === 'ADMIN' ? {} : { userId };
-  return prisma.task.findMany({ where, orderBy: { createdAt: 'desc' } });
+  const where = role === "ADMIN" ? {} : { userId };
+  return prisma.task.findMany({ where, orderBy: { createdAt: "desc" } });
 };
 
 const getTaskById = async (taskId, userId, role) => {
   const task = await prisma.task.findUnique({ where: { id: taskId } });
 
   if (!task) {
-    const err = new Error('Task not found');
+    const err = new Error("Task not found");
     err.statusCode = 404;
     throw err;
   }
 
-  if (role !== 'ADMIN' && task.userId !== userId) {
-    const err = new Error('Forbidden. You do not have access to this task.');
+  if (role !== "ADMIN" && task.userId !== userId) {
+    const err = new Error("Forbidden. You do not have access to this task.");
     err.statusCode = 403;
     throw err;
   }
@@ -29,7 +29,12 @@ const getTaskById = async (taskId, userId, role) => {
   return task;
 };
 
-const updateTask = async (taskId, userId, role, { title, description, completed }) => {
+const updateTask = async (
+  taskId,
+  userId,
+  role,
+  { title, description, completed },
+) => {
   await getTaskById(taskId, userId, role); // ownership check
 
   return prisma.task.update({
@@ -48,4 +53,10 @@ const deleteTask = async (taskId, userId, role) => {
   return prisma.task.delete({ where: { id: taskId } });
 };
 
-module.exports = { createTask, getAllTasks, getTaskById, updateTask, deleteTask };
+module.exports = {
+  createTask,
+  getAllTasks,
+  getTaskById,
+  updateTask,
+  deleteTask,
+};

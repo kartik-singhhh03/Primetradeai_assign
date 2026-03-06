@@ -13,6 +13,11 @@ const register = async (req, res, next) => {
         });
     }
 
+
+
+
+
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res
@@ -38,6 +43,8 @@ const register = async (req, res, next) => {
         message: "User registered successfully",
         data: user,
       });
+
+      
   } catch (err) {
     next(err);
   }

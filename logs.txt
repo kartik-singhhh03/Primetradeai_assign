@@ -1,0 +1,12 @@
+132b60e wire request logger and error logging middleware
+75d6456 apply green white theme to swagger ui
+42b0735 update ui to green and white minimalistic theme
+81b627b fix ssl config for neon postgres pool
+0646d7d fix prisma client init and cors config
+a93c12a add scalability notes and final README
+2e94838 connect frontend to backend
+cc385a0 add frontend ui
+48b7871 add global error handling
+d32b9b9  implemented crud api
+6adb4db  added authentication
+9d10dd8  added db schema
